@@ -3,8 +3,8 @@ Gem::Specification.new do |gem|
   gem.version       = File.read("VERSION").delete("\n\r")
   gem.authors       = ["nov matake"]
   gem.email         = ["nov@matake.jp"]
-  gem.description   = %q{TODO: WebFinger client library}
-  gem.summary       = %q{TODO: WebFinger client library}
+  gem.description   = %q{Ruby WebFinger client library}
+  gem.summary       = %q{Ruby WebFinger client library, following IETF WebFinger WG spec updates.}
   gem.homepage      = "https://github.com/nov/webfinger"
 
   gem.files         = `git ls-files`.split($/)

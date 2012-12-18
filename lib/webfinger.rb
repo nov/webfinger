@@ -1,4 +1,4 @@
-require "webfinger/version"
+require 'httpclient'
 
 module WebFinger
   VERSION = File.read(
@@ -12,48 +12,50 @@ module WebFinger
   end
 
   def cache=(cache)
-    @@cache = cache
+    @cache = cache
   end
   def cache
-    @@cache
+    @cache
   end
 
   def logger
-    @@logger
+    @logger
   end
   def logger=(logger)
-    @@logger = logger
+    @logger = logger
   end
-  logger = ::Logger.new(STDOUT)
-  logger.progname = 'SWD'
+  self.logger = ::Logger.new(STDOUT)
+  logger.progname = 'WebFinger'
 
   def debugging?
-    @@debugging
+    @debugging
   end
   def debugging=(boolean)
-    @@debugging = boolean
+    @debugging = boolean
   end
   def debug!
-    debugging = true
+    self.debugging = true
   end
-  debugging = false
+  self.debugging = false
+
+  def url_builder
+    @url_builder ||= URI::HTTPS
+  end
+  def url_builder=(builder)
+    @url_builder = builder
+  end
 
   def http_client
     _http_client_ = HTTPClient.new(
       agent_name: "WebFinger (#{VERSION})"
     )
     _http_client_.request_filter << Debugger::RequestFilter.new if debugging?
-    http_config.try(:call, _http_client_)
+    http_config && http_config.call(_http_client_)
     _http_client_
   end
   def http_config(&block)
-    @@http_config ||= block
-  end
-
-  def url_builder
-    @@url_builder ||= URI::HTTPS
-  end
-  def url_builder=(builder)
-    @@url_builder = builder
+    @http_config ||= block
   end
 end
+
+require 'webfinger/debugger'

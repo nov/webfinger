@@ -1,3 +1,4 @@
+require 'digest/md5'
 require 'httpclient'
 require 'multi_json'
 require 'active_support/core_ext'
@@ -9,8 +10,8 @@ module WebFinger
 
   module_function
 
-  def discover!(attributes = {})
-    # TODO
+  def discover!(resource, options = {})
+    Request.new(resource, options).discover!(options[:cache])
   end
 
   def cache=(cache)
@@ -61,3 +62,9 @@ module WebFinger
 end
 
 require 'webfinger/debugger'
+require 'webfinger/exception'
+require 'webfinger/cache'
+require 'webfinger/request'
+require 'webfinger/response'
+
+WebFinger.cache = WebFinger::Cache.new

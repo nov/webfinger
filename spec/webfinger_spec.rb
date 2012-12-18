@@ -1,11 +1,21 @@
 require 'spec_helper'
 
 describe WebFinger do
+  let(:resource) { "acct:nov@example.com" }
+  describe '#discover' do
+    it 'should return WebFinger::Response' do
+      mock_json "https://example.com/.well-known/webfinger", 'all', query: {resource: resource} do
+        response = WebFinger.discover! resource
+        response.should be_instance_of WebFinger::Response
+      end
+    end
+  end
+
   describe '#cache' do
     subject { WebFinger.cache }
 
     context 'as default' do
-      it { should be_nil }
+      it { should be_instance_of WebFinger::Cache }
     end
 
     context 'when specified' do

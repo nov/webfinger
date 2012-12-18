@@ -66,6 +66,7 @@ describe WebFinger do
 
     describe '#request_filter' do
       subject { WebFinger.http_client.request_filter.collect(&:class) }
+
       context 'as default' do
         it { should_not include WebFinger::Debugger::RequestFilter }
       end

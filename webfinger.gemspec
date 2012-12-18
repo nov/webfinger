@@ -13,6 +13,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.add_runtime_dependency "httpclient", ">= 2.2.0.2"
   gem.add_runtime_dependency "multi_json"
+  gem.add_runtime_dependency "activesupport", ">= 3"
   gem.add_development_dependency "rspec", ">= 2"
   gem.add_development_dependency "cover_me", ">= 1.2.0"
   gem.add_development_dependency "webmock", ">= 1.6.2"

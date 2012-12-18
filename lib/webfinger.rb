@@ -1,4 +1,6 @@
 require 'httpclient'
+require 'multi_json'
+require 'active_support/core_ext'
 
 module WebFinger
   VERSION = File.read(
@@ -50,7 +52,7 @@ module WebFinger
       agent_name: "WebFinger (#{VERSION})"
     )
     _http_client_.request_filter << Debugger::RequestFilter.new if debugging?
-    http_config && http_config.call(_http_client_)
+    http_config.try(:call, _http_client_)
     _http_client_
   end
   def http_config(&block)

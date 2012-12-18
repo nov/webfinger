@@ -26,7 +26,7 @@ module WebFinger
     end
     def expires_in
       if expires.present?
-        (Time.now - expires).to_i
+        (expires - Time.now).to_i
       end
     end
   end

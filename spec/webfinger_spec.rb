@@ -1,12 +1,100 @@
 require 'spec_helper'
 
 describe WebFinger do
-  let(:resource) { "acct:nov@example.com" }
-  describe '#discover' do
-    it 'should return WebFinger::Response' do
-      mock_json "https://example.com/.well-known/webfinger", 'all', query: {resource: resource} do
-        response = WebFinger.discover! resource
-        response.should be_instance_of WebFinger::Response
+  let(:resource) { 'acct:nov@example.com' }
+
+  describe '#discover!' do
+    shared_examples_for :discovery_succeeded do
+      it 'should return WebFinger::Response' do
+        mock_json 'https://example.com/.well-known/webfinger', 'all', query: {resource: resource} do
+          response = WebFinger.discover! resource
+          response.should be_instance_of WebFinger::Response
+        end
+      end
+    end
+
+    [:acct, :mailto, :device, :unknown].each do |scheme|
+      context "with #{scheme} scheme" do
+        let(:resource) { "#{scheme}:nov@example.com" }
+        it_behaves_like :discovery_succeeded
+      end
+    end
+
+    context 'with http scheme' do
+      let(:resource) { 'http://example.com/nov' }
+      it_behaves_like :discovery_succeeded
+    end
+
+    context 'with https scheme' do
+      let(:resource) { 'https://example.com/nov' }
+      it_behaves_like :discovery_succeeded
+    end
+
+    context 'with host option' do
+      it 'should use given host' do
+        mock_json 'https://discover.example.com/.well-known/webfinger', 'all', query: {resource: resource} do
+          response = WebFinger.discover! resource, host: 'discover.example.com'
+          response.should be_instance_of WebFinger::Response
+        end
+      end
+    end
+
+    context 'with port option' do
+      it 'should use given port' do
+        mock_json 'https://example.com:8080/.well-known/webfinger', 'all', query: {resource: resource} do
+          response = WebFinger.discover! resource, port: 8080
+          response.should be_instance_of WebFinger::Response
+        end
+      end
+    end
+
+    context 'with rel option' do
+      shared_examples_for :discovery_with_rel do
+        let(:query_string) do
+          query_params = [{resource: resource}.to_query]
+          Array(rel).each do |_rel_|
+            query_params << {rel: _rel_}.to_query
+          end
+          query_params.join('&')
+        end
+
+        it 'should request with rel' do
+          query_string.scan('rel').count.should == Array(rel).count
+          mock_json 'https://example.com/.well-known/webfinger', 'all', query: query_string do
+            response = WebFinger.discover! resource, rel: rel
+            response.should be_instance_of WebFinger::Response
+          end
+        end
+      end
+
+      context 'when single rel' do
+        let(:rel) { 'http://openid.net/specs/connect/1.0/issuer' }
+        it_behaves_like :discovery_with_rel
+      end
+
+      context 'when multiple rel' do
+        let(:rel) { ['http://openid.net/specs/connect/1.0/issuer', 'vcard'] }
+        it_behaves_like :discovery_with_rel
+      end
+    end
+
+    context 'when error' do
+      {
+        400 => WebFinger::BadRequest,
+        401 => WebFinger::Unauthorized,
+        403 => WebFinger::Forbidden,
+        404 => WebFinger::NotFound,
+        500 => WebFinger::HttpError
+      }.each do |status, exception_class|
+        context "when status=#{status}" do
+          it "should raise #{exception_class}" do
+            expect do
+              mock_json 'https://example.com/.well-known/webfinger', 'all', query: {resource: resource}, status: [status, 'HTTPError'] do
+                response = WebFinger.discover! resource
+              end
+            end.to raise_error exception_class
+          end
+        end
       end
     end
   end

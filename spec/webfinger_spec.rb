@@ -4,46 +4,27 @@ describe WebFinger do
   let(:resource) { 'acct:nov@example.com' }
 
   describe '#discover!' do
-    shared_examples_for :discovery_succeeded do
-      it 'should return WebFinger::Response' do
-        mock_json 'https://example.com/.well-known/webfinger', 'all', query: {resource: resource} do
-          response = WebFinger.discover! resource
-          response.should be_instance_of WebFinger::Response
-        end
-      end
-    end
-
-    [:acct, :mailto, :device, :unknown].each do |scheme|
-      context "with #{scheme} scheme" do
-        let(:resource) { "#{scheme}:nov@example.com" }
-        it_behaves_like :discovery_succeeded
-      end
-    end
-
-    context 'with http scheme' do
-      let(:resource) { 'http://example.com/nov' }
-      it_behaves_like :discovery_succeeded
-    end
-
-    context 'with https scheme' do
-      let(:resource) { 'https://example.com/nov' }
-      it_behaves_like :discovery_succeeded
-    end
-
-    context 'with host option' do
-      it 'should use given host' do
-        mock_json 'https://discover.example.com/.well-known/webfinger', 'all', query: {resource: resource} do
-          response = WebFinger.discover! resource, host: 'discover.example.com'
-          response.should be_instance_of WebFinger::Response
-        end
-      end
-    end
-
-    context 'with port option' do
-      it 'should use given port' do
-        mock_json 'https://example.com:8080/.well-known/webfinger', 'all', query: {resource: resource} do
-          response = WebFinger.discover! resource, port: 8080
-          response.should be_instance_of WebFinger::Response
+    {
+      'example.com' => 'https://example.com',
+      'nov@example.com' => 'https://example.com',
+      'acct:nov@example.com' => 'https://example.com',
+      'mailto:nov@example.com' => 'https://example.com',
+      'device:nov@example.com' => 'https://example.com',
+      'unknown:nov@example.com' => 'https://example.com',
+      'http://example.com/nov' => 'https://example.com',
+      'https://example.com/nov' => 'https://example.com',
+      'example.com:8080' => 'https://example.com:8080',
+      'nov@example.com:8080' => 'https://example.com:8080',
+      'acct:nov@example.com:8080' => 'https://example.com:8080',
+      'http://example.com:8080' => 'https://example.com:8080'
+    }.each do |resource, base_url|
+      endpoint = File.join(base_url, '/.well-known/webfinger')
+      context "when resource=#{resource}" do
+        it "should access to #{endpoint}" do
+          mock_json endpoint, 'all', query: {resource: resource} do
+            response = WebFinger.discover! resource
+            response.should be_instance_of WebFinger::Response
+          end
         end
       end
     end

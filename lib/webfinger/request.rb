@@ -32,9 +32,12 @@ module WebFinger
     def endpoint
       uri = URI.parse(resource)
       path = '/.well-known/webfinger'
-      host = @options[:host] || uri.host || resource.split(':').last.split('@').last.split('/').first
-      port = @options[:port] || ([80, 443].include?(uri.port) ? nil : uri.port)
-      WebFinger.url_builder.build [nil, host, port, path, query_string, nil]
+      host, port = if uri.host
+        [uri.host, [80, 443].include?(uri.port) ? nil : uri.port]
+      else
+        resource.sub("#{uri.scheme}:", '').split('@').last.split('/').first.split(':')
+      end
+      WebFinger.url_builder.build [nil, host, port.try(:to_i), path, query_string, nil]
     end
 
     def query_string

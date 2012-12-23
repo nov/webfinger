@@ -5,20 +5,48 @@ describe WebFinger do
 
   describe '#discover!' do
     {
-      'example.com' => 'https://example.com',
-      'nov@example.com' => 'https://example.com',
-      'acct:nov@example.com' => 'https://example.com',
-      'mailto:nov@example.com' => 'https://example.com',
-      'device:nov@example.com' => 'https://example.com',
+      'example.com'             => 'https://example.com',
+      'example.com/~nov/'       => 'https://example.com',
+      'nov@example.com'         => 'https://example.com',
+      'nov.matake@example.com'  => 'https://example.com',
+      'acct:nov@example.com'    => 'https://example.com',
+      'mailto:nov@example.com'  => 'https://example.com',
+      'device:example.com'      => 'https://example.com',
       'unknown:nov@example.com' => 'https://example.com',
-      'http://example.com/nov' => 'https://example.com',
+      'http://example.com/nov'  => 'https://example.com',
       'https://example.com/nov' => 'https://example.com',
-      'example.com:8080' => 'https://example.com:8080',
-      'nov@example.com:8080' => 'https://example.com:8080',
-      'acct:nov@example.com:8080' => 'https://example.com:8080',
-      'http://example.com:8080' => 'https://example.com:8080'
+      'example.com:8080'             => 'https://example.com:8080',
+      'example.com:8080/~nov/'       => 'https://example.com:8080',
+      'nov@example.com:8080'         => 'https://example.com:8080',
+      'nov.matake@example.com:8080'  => 'https://example.com:8080',
+      'acct:nov@example.com:8080'    => 'https://example.com:8080',
+      'mailto:nov@example.com:8080'  => 'https://example.com:8080',
+      'device:example.com:8080'      => 'https://example.com:8080',
+      'unknown:nov@example.com:8080' => 'https://example.com:8080',
+      'http://example.com:8080'      => 'https://example.com:8080',
+      'https://example.com:8080'     => 'https://example.com:8080',
+      'discover.example.com'             => 'https://discover.example.com',
+      'discover.example.com/~nov/'       => 'https://discover.example.com',
+      'nov@discover.example.com'         => 'https://discover.example.com',
+      'nov.matake@discover.example.com'  => 'https://discover.example.com',
+      'acct:nov@discover.example.com'    => 'https://discover.example.com',
+      'mailto:nov@discover.example.com'  => 'https://discover.example.com',
+      'device:discover.example.com'      => 'https://discover.example.com',
+      'unknown:nov@discover.example.com' => 'https://discover.example.com',
+      'http://discover.example.com/nov'  => 'https://discover.example.com',
+      'https://discover.example.com/nov' => 'https://discover.example.com',
+      'discover.example.com:8080'             => 'https://discover.example.com:8080',
+      'discover.example.com:8080/~nov/'       => 'https://discover.example.com:8080',
+      'nov@discover.example.com:8080'         => 'https://discover.example.com:8080',
+      'nov.matake@discover.example.com:8080'  => 'https://discover.example.com:8080',
+      'acct:nov@discover.example.com:8080'    => 'https://discover.example.com:8080',
+      'mailto:nov@discover.example.com:8080'  => 'https://discover.example.com:8080',
+      'device:discover.example.com:8080'      => 'https://discover.example.com:8080',
+      'unknown:nov@discover.example.com:8080' => 'https://discover.example.com:8080',
+      'http://discover.example.com:8080/nov'  => 'https://discover.example.com:8080',
+      'https://discover.example.com:8080/nov' => 'https://discover.example.com:8080'
     }.each do |resource, base_url|
-      endpoint = File.join(base_url, '/.well-known/webfinger')
+      endpoint = File.join base_url, '/.well-known/webfinger'
       context "when resource=#{resource}" do
         it "should access to #{endpoint}" do
           mock_json endpoint, 'all', query: {resource: resource} do

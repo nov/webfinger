@@ -23,17 +23,43 @@ Or install it yourself as:
 
 == Usage
 
+You can discover resource metadata.
+
   # Basic
-  WebFinger.discover! 'acct:nov@gmail.com'
+  WebFinger.discover! 'acct:nov@connect-op.heroku.com'
+  WebFinger.discover! 'connect-op.heroku.com'
+  WebFinger.discover! 'http://connect-op.heroku.com'
+
+You can also specify link relations via "rel" option.
 
   # Only specific relations
-  WebFinger.discover! 'acct:nov@gmail.com', rel: 'http://openid.net/specs/connect/1.0/issuer'
-  WebFinger.discover! 'acct:nov@gmail.com', rel: ['http://openid.net/specs/connect/1.0/issuer', 'vcard']
-
-  # Specify host
-  WebFinger.discover! 'acct:nov@gmail.com', host: 'mail.google.com'
+  WebFinger.discover! 'acct:nov@connect-op.heroku.com', rel: 'http://openid.net/specs/connect/1.0/issuer'
+  WebFinger.discover! 'acct:nov@connect-op.heroku.com', rel: ['http://openid.net/specs/connect/1.0/issuer', 'vcard']
 
 For more detailed usage, read <code>spec/webfinger_spec.rb</code>.
+
+== Caching
+
+Caching is important in HTTP-based discovery.
+
+If you set your own cache object to <code>WebFinger.cache</code>, this gem caches the discovery result until it expires.
+(the expiry is calculated based on the "expires" value in JRD response)
+
+  # Set Cache
+  WebFinger.cache = Rails.cache
+
+  WebFinger.discover! 'acct:nov@connect-op.heroku.com' # do HTTP request
+  WebFinger.discover! 'acct:nov@connect-op.heroku.com' # use cache, no HTTP request
+
+== Debugging
+
+Once you turn-on debugging, you can see all HTTP request/response in your log.
+
+  # Turn on debugging
+  WebFinger.debug!
+
+  # Set logger (OPTIONAL, ::Logger.new(STDOUT) is used as default)
+  WebFinger.logger = Rails.logger
 
 == Contributing
 

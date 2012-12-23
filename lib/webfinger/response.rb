@@ -3,8 +3,8 @@
 
 module WebFinger
   class Response < Hash
-    def initialize(hash)
-      replace hash
+    def initialize(jrd)
+      replace jrd
     end
 
     [:subject, :aliases, :properties, :links].each do |method|

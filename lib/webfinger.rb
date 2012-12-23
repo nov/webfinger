@@ -11,7 +11,7 @@ module WebFinger
   module_function
 
   def discover!(resource, options = {})
-    Request.new(resource, options).discover!(options[:cache])
+    Request.new(resource, options).discover!
   end
 
   def cache=(cache)

@@ -8,15 +8,13 @@ module WebFinger
       @options = options
     end
 
-    def discover!(cache_options = nil)
+    def discover!
       cached = WebFinger.cache.read cache_key
       if cached.blank? || cached.expired?
         fetched = handle_response do
           WebFinger.http_client.get_content endpoint.to_s
         end
-        cache_options ||= {}
-        cache_options[:expires_in] ||= fetched.expires_in
-        WebFinger.cache.write cache_key, fetched, cache_options
+        WebFinger.cache.write cache_key, fetched, expires_in: fetched.expires_in
         fetched
       else
         cached

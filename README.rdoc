@@ -23,22 +23,20 @@ Or install it yourself as:
 
 == Usage
 
+=== Basic
+
 You can discover resource metadata.
 
-  # Basic
   WebFinger.discover! 'acct:nov@connect-op.heroku.com'
   WebFinger.discover! 'connect-op.heroku.com'
   WebFinger.discover! 'http://connect-op.heroku.com'
 
 You can also specify link relations via "rel" option.
 
-  # Only specific relations
   WebFinger.discover! 'acct:nov@connect-op.heroku.com', rel: 'http://openid.net/specs/connect/1.0/issuer'
   WebFinger.discover! 'acct:nov@connect-op.heroku.com', rel: ['http://openid.net/specs/connect/1.0/issuer', 'vcard']
 
-For more detailed usage, read <code>spec/webfinger_spec.rb</code>.
-
-== Caching
+=== Caching
 
 Caching is important in HTTP-based discovery.
 
@@ -51,7 +49,7 @@ If you set your own cache object to <code>WebFinger.cache</code>, this gem cache
   WebFinger.discover! 'acct:nov@connect-op.heroku.com' # do HTTP request
   WebFinger.discover! 'acct:nov@connect-op.heroku.com' # use cache, no HTTP request
 
-== Debugging
+=== Debugging
 
 Once you turn-on debugging, you can see all HTTP request/response in your log.
 
@@ -60,6 +58,10 @@ Once you turn-on debugging, you can see all HTTP request/response in your log.
 
   # Set logger (OPTIONAL, ::Logger.new(STDOUT) is used as default)
   WebFinger.logger = Rails.logger
+
+You can also specify URL builder to force non-HTTPS access. (NOTE: allow non-HTTPS access only for debugging, not on your production.)
+
+  WebFinger.url_builder = URI::HTTP # default URI::HTTPS
 
 == Contributing
 

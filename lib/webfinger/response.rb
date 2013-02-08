@@ -12,22 +12,5 @@ module WebFinger
         self[method]
       end
     end
-
-    def expired?
-      expires.try(:past?)
-    end
-    def expires
-      @expires ||= case self[:expires]
-      when Time
-        self[:expires]
-      when String
-        Time.parse self[:expires]
-      end
-    end
-    def expires_in
-      if expires.present?
-        (expires - Time.now).to_i
-      end
-    end
   end
 end

@@ -108,20 +108,6 @@ describe WebFinger do
     end
   end
 
-  describe '#cache' do
-    subject { WebFinger.cache }
-
-    context 'as default' do
-      it { should be_instance_of WebFinger::Cache }
-    end
-
-    context 'when specified' do
-      let(:cacher) { 'Rails.cache or something' }
-      before { WebFinger.cache = cacher }
-      it { should == cacher }
-    end
-  end
-
   describe '#logger' do
     subject { WebFinger.logger }
 

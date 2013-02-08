@@ -14,13 +14,6 @@ module WebFinger
     Request.new(resource, options).discover!
   end
 
-  def cache=(cache)
-    @cache = cache
-  end
-  def cache
-    @cache
-  end
-
   def logger
     @logger
   end
@@ -63,8 +56,5 @@ end
 
 require 'webfinger/debugger'
 require 'webfinger/exception'
-require 'webfinger/cache'
 require 'webfinger/request'
 require 'webfinger/response'
-
-WebFinger.cache = WebFinger::Cache.new

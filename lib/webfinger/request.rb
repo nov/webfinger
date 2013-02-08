@@ -9,23 +9,12 @@ module WebFinger
     end
 
     def discover!
-      cached = WebFinger.cache.read cache_key
-      if cached.blank? || cached.expired?
-        fetched = handle_response do
-          WebFinger.http_client.get_content endpoint.to_s
-        end
-        WebFinger.cache.write cache_key, fetched, expires_in: fetched.expires_in
-        fetched
-      else
-        cached
+      handle_response do
+        WebFinger.http_client.get_content endpoint.to_s
       end
     end
 
     private
-
-    def cache_key
-      "webfinger:resource:#{Digest::MD5.hexdigest query_string}"
-    end
 
     def endpoint
       path = '/.well-known/webfinger'

@@ -51,7 +51,7 @@ module WebFinger
 
     def handle_response
       raw_response = yield
-      jrd = MultiJson.load raw_response, symbolize_keys: true
+      jrd = MultiJson.load(raw_response).with_indifferent_access
       Response.new jrd
     rescue HTTPClient::BadResponseError => e
       case e.res.try(:status)

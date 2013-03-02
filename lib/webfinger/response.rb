@@ -12,5 +12,11 @@ module WebFinger
         self[method]
       end
     end
+
+    def link_for(rel)
+      links.detect do |link|
+        link[:rel] == rel
+      end
+    end
   end
 end

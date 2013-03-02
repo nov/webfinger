@@ -25,4 +25,18 @@ describe WebFinger::Response do
   its(:aliases)    { should == aliases }
   its(:properties) { should == properties }
   its(:links)      { should == links }
+
+  describe '#link_for' do
+    context 'when unknown' do
+      it do
+        subject.link_for('unknown').should be_nil
+      end
+    end
+
+    context 'otherwise' do
+      it do
+        subject.link_for('http://openid.net/specs/connect/1.0/issuer').should == links.first
+      end
+    end
+  end
 end

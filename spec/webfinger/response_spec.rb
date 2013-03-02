@@ -21,7 +21,7 @@ describe WebFinger::Response do
     )
   end
 
-  its(:subject)    { should == subject }
+  its(:subject)    { should == _subject_ }
   its(:aliases)    { should == aliases }
   its(:properties) { should == properties }
   its(:links)      { should == links }

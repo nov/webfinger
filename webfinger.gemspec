@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
-  gem.add_runtime_dependency "httpclient", ">= 2.2.0.2"
+  gem.add_runtime_dependency "httpclient", ">= 2.4"
   gem.add_runtime_dependency "multi_json"
   gem.add_runtime_dependency "activesupport"
   gem.add_development_dependency "rake"

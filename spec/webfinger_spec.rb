@@ -126,16 +126,16 @@ describe WebFinger do
     subject { WebFinger.debugging? }
 
     context 'as default' do
-      it { should be_false }
+      it { should == false }
     end
 
     context 'when debugging' do
       before { WebFinger.debug! }
-      it { should be_true }
+      it { should == true }
 
       context 'when debugging mode canceled' do
         before { WebFinger.debugging = false }
-        it { should be_false }
+        it { should == false }
       end
     end
   end

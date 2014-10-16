@@ -8,7 +8,7 @@ describe WebFinger::Debugger::RequestFilter do
 
   describe '#filter_request' do
     it 'should log request' do
-      WebFinger.logger.should_receive(:info).with(
+      expect(WebFinger.logger).to receive(:info).with(
         "======= [WebFinger] HTTP REQUEST STARTED =======\n" +
         request.dump
       )
@@ -18,7 +18,7 @@ describe WebFinger::Debugger::RequestFilter do
 
   describe '#filter_response' do
     it 'should log response' do
-      WebFinger.logger.should_receive(:info).with(
+      expect(WebFinger.logger).to receive(:info).with(
         "--------------------------------------------------\n" +
         response.dump +
         "\n======= [WebFinger] HTTP REQUEST FINISHED ======="

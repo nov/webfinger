@@ -1,4 +1,3 @@
-require 'digest/md5'
 require 'httpclient'
 require 'multi_json'
 require 'active_support'

@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.add_runtime_dependency "httpclient", ">= 2.4"
   gem.add_runtime_dependency "multi_json"
-  gem.add_runtime_dependency "activesupport"
+  gem.add_runtime_dependency "activesupport", ">= 5.0.0.beta1"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec"
   gem.add_development_dependency 'rspec-its'

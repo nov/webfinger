@@ -1,5 +1,5 @@
+require 'json'
 require 'httpclient'
-require 'multi_json'
 require 'active_support'
 require 'active_support/core_ext'
 

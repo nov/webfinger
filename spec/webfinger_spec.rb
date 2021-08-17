@@ -158,15 +158,15 @@ describe WebFinger do
     subject { WebFinger.http_client }
 
     describe '#request_filter' do
-      subject { WebFinger.http_client.request_filter.collect(&:class) }
+      subject { WebFinger.http_client.builder.handlers.collect(&:klass) }
 
       context 'as default' do
-        it { should_not include WebFinger::Debugger::RequestFilter }
+        it { should_not include Faraday::Response::Logger }
       end
 
       context 'when debugging' do
         before { WebFinger.debug! }
-        it { should include WebFinger::Debugger::RequestFilter }
+        it { should include Faraday::Response::Logger }
       end
     end
   end

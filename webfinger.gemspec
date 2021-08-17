@@ -12,7 +12,8 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
-  gem.add_runtime_dependency 'httpclient', '>= 2.4'
+  gem.add_runtime_dependency 'faraday', '~> 1.7'
+  gem.add_runtime_dependency 'faraday_middleware', '~> 1.1'
   gem.add_runtime_dependency 'activesupport'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'

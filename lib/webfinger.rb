@@ -1,6 +1,6 @@
 require 'json'
 require 'faraday'
-require 'faraday_middleware'
+require 'faraday/follow_redirects'
 require 'active_support'
 require 'active_support/core_ext'
 
@@ -43,12 +43,13 @@ module WebFinger
   end
 
   def http_client
-    Faraday.new(headers: {user_agent: "WebFinger #{VERSION}"}) do |f|
-      f.response :raise_error
-      f.response :json
-      f.response :logger, WebFinger.logger if debugging?
-      f.use FaradayMiddleware::FollowRedirects
-      http_config.try(:call, f)
+    Faraday.new(headers: {user_agent: "WebFinger #{VERSION}"}) do |faraday|
+      faraday.response :raise_error
+      faraday.response :json
+      faraday.response :follow_redirects
+      faraday.response :logger, WebFinger.logger if debugging?
+      faraday.adapter Faraday.default_adapter
+      http_config.try(:call, faraday)
     end
   end
 

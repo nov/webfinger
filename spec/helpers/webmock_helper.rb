@@ -27,7 +27,7 @@ module WebMockHelper
   def response_for(response_file, options = {})
     response = {}
     response[:headers] = {
-      'Content-Type' => 'application/json'
+      'Content-Type': 'application/json'
     }
     response[:body] = File.new(File.join(File.dirname(__FILE__), '../mock_json', "#{response_file}.json"))
     if options[:status]

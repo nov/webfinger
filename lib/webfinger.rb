@@ -43,7 +43,7 @@ module WebFinger
   end
 
   def http_client
-    Faraday.new(headers: {user_agent: "Webfinger #{VERSION}"}) do |f|
+    Faraday.new(headers: {user_agent: "WebFinger #{VERSION}"}) do |f|
       f.response :raise_error
       f.response :json
       f.response :logger, WebFinger.logger if debugging?

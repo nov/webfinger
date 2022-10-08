@@ -2,8 +2,6 @@
 
 An Ruby WebFinger client library.
 
-{<img src="https://secure.travis-ci.org/nov/webfinger.png" />}[http://travis-ci.org/nov/webfinger]
-
 Following the latest WebFinger spec discussed at IETF WebFinger WG.
 http://tools.ietf.org/html/draft-ietf-appsawg-webfinger
 

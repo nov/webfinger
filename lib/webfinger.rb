@@ -1,5 +1,6 @@
 require 'json'
-require 'httpclient'
+require 'faraday'
+require 'faraday_middleware'
 require 'active_support'
 require 'active_support/core_ext'
 
@@ -42,24 +43,20 @@ module WebFinger
   end
 
   def http_client
-    _http_client_ = HTTPClient.new(
-      agent_name: "WebFinger (#{VERSION})"
-    )
-
-    # NOTE: httpclient gem seems stopped maintaining root certtificate set, use OS default.
-    _http_client_.ssl_config.clear_cert_store
-    _http_client_.ssl_config.cert_store.set_default_paths
-
-    _http_client_.request_filter << Debugger::RequestFilter.new if debugging?
-    http_config.try(:call, _http_client_)
-    _http_client_
+    Faraday.new(headers: {user_agent: "WebFinger #{VERSION}"}) do |f|
+      f.response :raise_error
+      f.response :json
+      f.response :logger, WebFinger.logger if debugging?
+      f.use FaradayMiddleware::FollowRedirects
+      http_config.try(:call, f)
+    end
   end
+
   def http_config(&block)
     @http_config ||= block
   end
 end
 
-require 'webfinger/debugger'
 require 'webfinger/exception'
 require 'webfinger/request'
 require 'webfinger/response'

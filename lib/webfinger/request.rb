@@ -10,7 +10,7 @@ module WebFinger
 
     def discover!
       handle_response do
-        WebFinger.http_client.get_content endpoint.to_s
+        WebFinger.http_client.get(endpoint.to_s)
       end
     end
 
@@ -50,23 +50,22 @@ module WebFinger
     end
 
     def handle_response
-      raw_response = yield
-      jrd = JSON.parse(raw_response).with_indifferent_access
-      Response.new jrd
-    rescue HTTPClient::BadResponseError => e
-      case e.res.try(:status)
+      json = yield.body
+      Response.new json
+    rescue Faraday::Error => e
+      case e.response_status
       when nil
         raise e
       when 400
-        raise BadRequest.new('Bad Request', raw_response)
+        raise BadRequest.new('Bad Request', e.response_body)
       when 401
-        raise Unauthorized.new('Unauthorized', raw_response)
+        raise Unauthorized.new('Unauthorized', e.response_body)
       when 403
-        raise Forbidden.new('Forbidden', raw_response)
+        raise Forbidden.new('Forbidden', e.response_body)
       when 404
-        raise NotFound.new('Not Found', raw_response)
+        raise NotFound.new('Not Found', e.response_body)
       else
-        raise HttpError.new(e.res.status, e.res.reason, raw_response)
+        raise HttpError.new(e.response_status, e.response_body, e.response_body)
       end
     end
   end

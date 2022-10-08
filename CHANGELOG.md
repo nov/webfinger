@@ -1,6 +1,6 @@
-## [Unreleased]
+# [Unreleased]
 
-## [2.1.0] - 2022-10-08
+# [2.1.0] - 2022-10-08
 
 ## What's Changed
 
@@ -8,7 +8,7 @@
 
 **Full Changelog**: https://github.com/nov/webfinger/compare/v2.0.0...v2.1.0
 
-## [2.0.0] - 2022-10-08
+# [2.0.0] - 2022-10-08
 
 ## What's Changed
 * Switch from httpclient to faraday by @nudded in https://github.com/nov/webfinger/pull/9

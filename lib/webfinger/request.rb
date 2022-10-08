@@ -50,7 +50,7 @@ module WebFinger
     end
 
     def handle_response
-      json = yield.body
+      json = yield.body.with_indifferent_access
       Response.new json
     rescue Faraday::Error => e
       case e.response_status

@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [2.1.1] - 2022-10-08
+
+### Fixed
+
+- make response json indifferent accessable https://github.com/nov/webfinger/commit/806bc2e2220024f419f44857e5629ff7f9f78fbf
+
 ## [2.1.0] - 2022-10-08
 
 ### Changed

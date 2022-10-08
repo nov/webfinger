@@ -157,7 +157,7 @@ describe WebFinger do
   describe '#http_client' do
     subject { WebFinger.http_client }
 
-    describe '#request_filter' do
+    describe '#logger' do
       subject { WebFinger.http_client.builder.handlers.collect(&:klass) }
 
       context 'as default' do

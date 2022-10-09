@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [2.1.1] - 2022-10-09
+
+### Changed
+
+- convert Faraday::Error to WebFinger::Exception https://github.com/nov/webfinger/commit/a0d8da20f6ce819eea8c2d2c81bcc90d3f41df6f
+
 ## [2.1.1] - 2022-10-08
 
 ### Fixed

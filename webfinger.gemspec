@@ -20,4 +20,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rspec-its'
   gem.add_development_dependency 'simplecov'
   gem.add_development_dependency 'webmock', '>= 1.6.2'
+  gem.metadata["changelog_uri"] = gem.homepage + "/releases"
 end
